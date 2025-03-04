@@ -1,9 +1,9 @@
-1.Tiche trziste - Dolni namesti
-2.Dolni namesti - Tiche trziste, Opusteny dum, Horni namesti
-3.Opusteny dum - Sklepeni, Dolni namesti
-4.Sklepeni - Opusteny dum
-5.Horni namesti - Stary kostel, Sin posledniho soudu, Rozborena vez
-6.Stary kostel - Horni namesti
-7.Sin posledniho soudu - Horni namesti, Komnata smrti
-8.Komnata smrti - Sin posledniho soudu
-9.Rozbora vez - Horni namesti
+1;Tiche trziste;2
+2;Dolni namesti;1;3;5
+3;Opusteny dum;4;2
+4;Sklepeni;3
+5;Horni namesti;6;7;9
+6;Stary kostel;5
+7;Sin posledniho soudu;5;8
+8;Komnata smrti;7
+9;Rozborena vez;5
