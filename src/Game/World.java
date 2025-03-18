@@ -1,4 +1,4 @@
-
+package Game;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class World {
     private int currentPosition = start;
 
     public boolean loadMap() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src\\Mapa.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Game/Mapa.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] rozdeleniRadku = line.split(";");
@@ -24,8 +24,12 @@ public class World {
             }
             return true;
         } catch (IOException e) {
+            System.out.println("Chyba nacteni souboru mapy");
             return false;
         }
+    }
+
+    public World() {
     }
 
     public Location getCurrentPosition() {
@@ -44,9 +48,23 @@ public class World {
                 System.out.println("soused neni cislo");
             }
         }
-        return false; //
+        return false;
     }
-    public Map<Integer, Location> getWorld() {
-        return world;
+
+
+    public boolean movePlayer(int direction) {
+        int newLocation = direction;
+        return moveTo(newLocation);
     }
+
+    public Location getLocation(int id) {
+        return world.get(id);
+    }
+
+
+    public void assignNPCs() {
+       getLocation(1).addAlly(new Ally("Mira", "Wassup", true, ""));
+    }
+
+
 }
