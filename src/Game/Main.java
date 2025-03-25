@@ -7,6 +7,7 @@ public class Main {
         World world = new World();
         Console console = new Console(world);
         world.assignNPCs();
+        world.assignItems();
         console.startConsole();
 
     }

@@ -5,10 +5,12 @@ public class Item {
     private boolean isMovable;
     private boolean isMain;
 
+
     public Item(String name, boolean isMovable, boolean isMain) {
         this.name = name;
         this.isMovable = isMovable;
         this.isMain = isMain;
+
     }
 
     public String getName() {
@@ -21,5 +23,13 @@ public class Item {
 
     public boolean isMain() {
         return isMain;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                ", isMovable=" + isMovable +
+                '}';
     }
 }

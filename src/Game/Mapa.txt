@@ -2,7 +2,7 @@
 2;Dolni namesti;1;3;5
 3;Opusteny dum;4;2
 4;Sklepeni;3
-5;Horni namesti;6;7;9
+5;Horni namesti;2;6;7;9
 6;Stary kostel;5
 7;Sin posledniho soudu;5;8
 8;Komnata smrti;7

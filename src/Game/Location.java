@@ -1,56 +1,52 @@
 package Game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location {
     private int id;
     private String name;
     private String[] neighbors;
-    private Ally ally;
-    private Enemy enemy;
-    private Object item; //Weapon, Armor, Key (zalezi jakou zbroj potrebuji v dany moment)
+    private List<Ally> allies;
+    private List<Enemy> enemies;
+    private Object item;
+    private boolean locked;
 
     public Location(int id, String name, String[] neighbors) {
         this.id = id;
         this.name = name;
         this.neighbors = neighbors;
-        this.ally = null;
-        this.enemy = null;
+        this.allies = new ArrayList<>();
+        this.enemies = new ArrayList<>();
         this.item = null;
-    }
 
-    public boolean addAlly(Ally ally) {
-        if (this.ally == null && this.enemy == null) {
-            this.ally = ally;
-            return true;
+        if (name.equalsIgnoreCase("Sklepeni")) {
+            this.locked = true;
         } else {
-            System.out.println("V teto lokaci uz je NPC.");
-            return false;
+            this.locked = false;
         }
     }
 
-    public boolean addEnemy(Enemy enemy) {
-        if (this.ally == null && this.enemy == null) {
-            this.enemy = enemy;
-            return true;
-        } else {
-            System.out.println("V teto lokaci uz je NPC.");
-            return false;
-        }
+    public void addAlly(Ally ally) {
+        allies.add(ally);
+    }
+
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
     }
 
     public void removeNPC() {
-        this.ally = null;
-        this.enemy = null;
+        allies.clear();
+        enemies.clear();
     }
 
-
-    public Ally getAlly() {
-        return ally;
+    public List<Ally> getAllies() {
+        return allies;
     }
 
-    public Enemy getEnemy() {
-        return enemy;
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
-
 
     public Object getItem() {
         return item;
@@ -58,6 +54,10 @@ public class Location {
 
     public void setItem(Object item) {
         this.item = item;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -68,13 +68,33 @@ public class Location {
         return neighbors;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
     @Override
     public String toString() {
         String npcInfo;
-        if (ally != null) {
-            npcInfo = "Ally: " + ally.getName();
-        } else if (enemy != null) {
-            npcInfo = "Enemy: " + enemy.getName();
+        if (allies.size() > 0) {
+            npcInfo = "Allies: ";
+            for (int i = 0; i < allies.size(); i++) {
+                npcInfo = npcInfo + allies.get(i).getName();
+                if (i < allies.size() - 1) {
+                    npcInfo = npcInfo + ", ";
+                }
+            }
+        } else if (enemies.size() > 0) {
+            npcInfo = "Enemies: ";
+            for (int i = 0; i < enemies.size(); i++) {
+                npcInfo = npcInfo + enemies.get(i).getName();
+                if (i < enemies.size() - 1) {
+                    npcInfo = npcInfo + ", ";
+                }
+            }
         } else {
             npcInfo = "None";
         }
@@ -91,4 +111,22 @@ public class Location {
                 + ", npc=" + npcInfo
                 + ", item=" + itemInfo + "}";
     }
+
+
+    public Ally getAlly() {
+        if (allies.isEmpty()) {
+            return null;
+        } else {
+            return allies.get(0);
+        }
+    }
+
+    public Enemy getEnemy() {
+        if (enemies.isEmpty()) {
+            return null;
+        } else {
+            return enemies.get(0);
+        }
+    }
+
 }

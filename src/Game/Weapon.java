@@ -28,4 +28,14 @@ public class Weapon {
  public int getPrice() {
   return price;
  }
+
+ @Override
+ public String toString() {
+  return "Weapon{" +
+          "name='" + name + '\'' +
+          ", mageBoost=" + mageBoost +
+          ", warriorBoost=" + warriorBoost +
+          ", price=" + price +
+          '}';
+ }
 }

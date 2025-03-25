@@ -7,6 +7,7 @@ public class Inventory {
     private ArrayList<Armor> helmets;
     private ArrayList<Armor> chestplates;
     private ArrayList<Armor> pants;
+    private ArrayList<Item> Items = new ArrayList<>();
     private Key key;
 
     public Inventory() {
@@ -17,13 +18,41 @@ public class Inventory {
         key = null;
     }
 
+    public ArrayList<Item> getItems() {
+        return Items;
+    }
+
+    public boolean addItem(Item item) {
+        Items.add(item);
+        return true;
+    }
+
+    public int getWeaponsCount() {
+        return weapons.size();
+    }
+
+    public int getHelmetsCount() {
+        return helmets.size();
+    }
+
+    public int getChestplatesCount() {
+        return chestplates.size();
+    }
+
+    public int getPantsCount() {
+        return pants.size();
+    }
+
+
+
+
     public boolean discardWeapon() {
         if (weapons.size() > 1) {
             weapons.remove(1);
-            System.out.println("Zbran byla zahozena.");
+
             return true;
         } else {
-            System.out.println("Nemuzes zahodit posledni zbran.");
+
             return false;
         }
     }
@@ -31,10 +60,10 @@ public class Inventory {
     public boolean discardHelmet() {
         if (helmets.size() > 1) {
             helmets.remove(1);
-            System.out.println("Helma byla zahozena.");
+
             return true;
         } else {
-            System.out.println("Nemuzes zahodit posledni helmu.");
+
             return false;
         }
     }
@@ -42,10 +71,10 @@ public class Inventory {
     public boolean discardChestplate() {
         if (chestplates.size() > 1) {
             chestplates.remove(1);
-            System.out.println("Chestplate byl zahozen.");
+
             return true;
         } else {
-            System.out.println("Nemuzes zahodit posledni chestplate.");
+
             return false;
         }
     }
@@ -53,13 +82,46 @@ public class Inventory {
     public boolean discardPants() {
         if (pants.size() > 1) {
             pants.remove(1);
-            System.out.println("Kalhoty byly zahozeny.");
+
             return true;
         } else {
-            System.out.println("Nemuzes zahodit posledni kalhoty.");
+
             return false;
         }
     }
+
+    public boolean sellActiveWeapon() {
+        if (!weapons.isEmpty()) {
+            weapons.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean sellActiveHelmet() {
+        if (!helmets.isEmpty()) {
+            helmets.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean sellActiveChestplate() {
+        if (!chestplates.isEmpty()) {
+            chestplates.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean sellActivePants() {
+        if (!pants.isEmpty()) {
+            pants.remove(0);
+            return true;
+        }
+        return false;
+    }
+
 
 
 
@@ -102,7 +164,7 @@ public class Inventory {
             weapons.add(weapon);
             return true;
         } else {
-            System.out.println("Mas plne sloty na zbrane.");
+
             return false;
         }
     }
@@ -112,7 +174,7 @@ public class Inventory {
             helmets.add(helmet);
             return true;
         } else {
-            System.out.println("Mas plne sloty na helmy.");
+
             return false;
         }
     }
@@ -122,7 +184,7 @@ public class Inventory {
             chestplates.add(chestplate);
             return true;
         } else {
-            System.out.println("Mas plne sloty na chestplaty.");
+
             return false;
         }
     }
@@ -132,7 +194,7 @@ public class Inventory {
             pants.add(pant);
             return true;
         } else {
-            System.out.println("Mas plne sloty na kalhoty.");
+
             return false;
         }
     }
@@ -142,7 +204,7 @@ public class Inventory {
             key = newKey;
             return true;
         } else {
-            System.out.println("Uz mas klic. Nelze nest vice klicu.");
+
             return false;
         }
     }
@@ -157,52 +219,52 @@ public class Inventory {
 
     public boolean equipWeapon() {
         if (weapons.size() < 2) {
-            System.out.println("Nemuzes vybavit jinou zbran, protoze nemas zadnou v rezerve.");
+
             return false;
         } else {
             Weapon temp = weapons.get(0);
             weapons.set(0, weapons.get(1));
             weapons.set(1, temp);
-            System.out.println("Vybavil jsi: " + weapons.get(0).getName());
+
             return true;
         }
     }
 
     public boolean equipHelmet() {
         if (helmets.size() < 2) {
-            System.out.println("Nemuzes vybavit jinou helmu, protoze nemas zadnou v rezerve.");
+
             return false;
         } else {
             Armor temp = helmets.get(0);
             helmets.set(0, helmets.get(1));
             helmets.set(1, temp);
-            System.out.println("Vybavil jsi: " + helmets.get(0).getName());
+
             return true;
         }
     }
 
     public boolean equipChestplate() {
         if (chestplates.size() < 2) {
-            System.out.println("Nemuzes vybavit jiny chestplate, protoze nemas zadny v rezerve.");
+
             return false;
         } else {
             Armor temp = chestplates.get(0);
             chestplates.set(0, chestplates.get(1));
             chestplates.set(1, temp);
-            System.out.println("Vybavil jsi: " + chestplates.get(0).getName());
+
             return true;
         }
     }
 
     public boolean equipPants() {
         if (pants.size() < 2) {
-            System.out.println("Nemuzes vybavit jine kalhoty, protoze nemas zadne v rezerve.");
+
             return false;
         } else {
             Armor temp = pants.get(0);
             pants.set(0, pants.get(1));
             pants.set(1, temp);
-            System.out.println("Vybavil jsi: " + pants.get(0).getName());
+
             return true;
         }
     }

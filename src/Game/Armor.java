@@ -2,9 +2,10 @@ package Game;
 
 public class Armor {
     private String name;
-    private String type; // "helma", "chestplate", "kalhoty"
+    private String type;
     private int mageBoost;
     private int warriorBoost;
+    private int price;
 
     public Armor(String name, String type, int mageBoost, int warriorBoost) {
         this.name = name;
@@ -27,5 +28,20 @@ public class Armor {
 
     public int getWarriorBoost() {
         return warriorBoost;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Armor{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", mageBoost=" + mageBoost +
+                ", warriorBoost=" + warriorBoost +
+                ", price=" + price +
+                '}';
     }
 }

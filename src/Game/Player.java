@@ -10,7 +10,10 @@ public class Player {
     private Weapon equippedWeapon;
     private Inventory equipment;
     private Location currentLocation;
-    private boolean hasMainItems;
+
+    private int money = 200;
+
+
 
     public Player(String name, int health, int attack, Inventory equipment) {
         this.name = name;
@@ -19,8 +22,27 @@ public class Player {
         this.inventory = new ArrayList<>();
         this.equipment = equipment;
         this.currentLocation = null;
-        this.hasMainItems = false;
     }
+
+    public boolean hasAllMainItems() {
+        boolean hasDagger = false;
+        boolean hasBook = false;
+        boolean hasMask = false;
+
+        for (Item i : this.equipment.getItems()) {
+            String name = i.getName();
+            if (name.equalsIgnoreCase("Dyka smrti")) {
+                hasDagger = true;
+            } else if (name.equalsIgnoreCase("Kniha kouzel")) {
+                hasBook = true;
+            } else if (name.equalsIgnoreCase("Maska zapomneni")) {
+                hasMask = true;
+            }
+        }
+
+        return hasDagger && hasBook && hasMask;
+    }
+
 
     public int getHealth() {
         return health;
@@ -54,8 +76,15 @@ public class Player {
         this.currentLocation = location;
     }
 
-    public void fight(Enemy enemy) {        //prototyp metody ktera resi souboj (neni finalni)
-        System.out.println("Souboj zacal!");
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public void fight(Enemy enemy) {
         while (this.health > 0 && enemy.getHealth() > 0) {
             int weaponBonus = 0;
             if (this.equippedWeapon != null) {
@@ -100,7 +129,6 @@ public class Player {
             System.out.println("Hrac zautocil a ubral " + playerDamage + " hp neprateli.");
 
             if (enemy.getHealth() <= 0) {
-                System.out.println("Vyhral jsi souboj!");
                 break;
             }
 
@@ -109,11 +137,12 @@ public class Player {
             System.out.println("Nepritel zautocil a ubral " + enemyDamage + " hp hraci.");
 
             if (this.health <= 0) {
-                System.out.println("Prohral jsi....");
                 break;
             }
         }
     }
+
+
 
     public void setAttack(int attack) {
         this.attack = attack;
