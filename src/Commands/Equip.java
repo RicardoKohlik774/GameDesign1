@@ -20,28 +20,28 @@ public class Equip implements Command {
         if (choice.equals("zbran")) {
             boolean success = inventory.equipWeapon();
             if (success) {
-                return "Zbran byla vybavena.";
+                return "Vybavil jsi " + inventory.getEquippedWeapon() + ".";
             } else {
                 return "Nemuzes vybavit jinou zbran, protoze nemas zadnou v rezerve.";
             }
         } else if (choice.equals("helma")) {
             boolean success = inventory.equipHelmet();
             if (success) {
-                return "Helma byla vybavena.";
+                return "Vybavil jsi " + inventory.getEquippedHelmet() + ".";
             } else {
                 return "Nemuzes vybavit jinou helmu, protoze nemas zadnou v rezerve.";
             }
         } else if (choice.equals("chestplate")) {
             boolean success = inventory.equipChestplate();
             if (success) {
-                return "Chestplate byl vybaven.";
+                return "Vybavil jsi " + inventory.getEquippedChestplate() + ".";
             } else {
                 return "Nemuzes vybavit jiny chestplate, protoze nemas zadny v rezerve.";
             }
         } else if (choice.equals("kalhoty")) {
             boolean success = inventory.equipPants();
             if (success) {
-                return "Kalhoty byly vybaveny.";
+                return "Vybavil jsi " + inventory.getEquippedPants() + ".";
             } else {
                 return "Nemuzes vybavit jine kalhoty, protoze nemas zadne v rezerve.";
             }

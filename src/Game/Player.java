@@ -87,37 +87,37 @@ public class Player {
     public void fight(Enemy enemy) {
         while (this.health > 0 && enemy.getHealth() > 0) {
             int weaponBonus = 0;
-            if (this.equippedWeapon != null) {
-                if (this.equippedWeapon.getWarriorBoost() != 0) {
-                    weaponBonus = this.equippedWeapon.getWarriorBoost();
-                } else if (this.equippedWeapon.getMageBoost() != 0) {
-                    weaponBonus = this.equippedWeapon.getMageBoost();
+            if (equipment.getEquippedWeapon() != null) {
+                if (equipment.getEquippedWeapon() .getWarriorBoost() != 0) {
+                    weaponBonus = equipment.getEquippedWeapon() .getWarriorBoost();
+                } else if (equipment.getEquippedWeapon() .getMageBoost() != 0) {
+                    weaponBonus = equipment.getEquippedWeapon() .getMageBoost();
                 }
             }
 
             int armorBonus = 0;
-            if (this.equipment != null) {
-                if (this.equipment.getEquippedHelmet() != null) {
-                    Armor helm = this.equipment.getEquippedHelmet();
-                    if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+            if (equipment.getEquippedHelmet() != null) {
+                if (equipment.getEquippedHelmet() != null) {
+                    Armor helm = equipment.getEquippedHelmet();
+                    if (equipment.getEquippedHelmet() != null && equipment.getEquippedHelmet().getWarriorBoost() != 0) {
                         armorBonus = armorBonus + helm.getWarriorBoost();
-                    } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    } else if (equipment.getEquippedHelmet() != null && equipment.getEquippedHelmet().getMageBoost() != 0) {
                         armorBonus = armorBonus + helm.getMageBoost();
                     }
                 }
-                if (this.equipment.getEquippedChestplate() != null) {
-                    Armor chest = this.equipment.getEquippedChestplate();
-                    if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+                if (equipment.getEquippedChestplate() != null) {
+                    Armor chest = equipment.getEquippedChestplate();
+                    if (equipment.getEquippedChestplate() != null && equipment.getEquippedChestplate().getWarriorBoost() != 0) {
                         armorBonus = armorBonus + chest.getWarriorBoost();
-                    } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    } else if (equipment.getEquippedChestplate() != null && equipment.getEquippedChestplate().getMageBoost() != 0) {
                         armorBonus = armorBonus + chest.getMageBoost();
                     }
                 }
-                if (this.equipment.getEquippedPants() != null) {
-                    Armor pants = this.equipment.getEquippedPants();
-                    if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+                if (equipment.getEquippedPants() != null) {
+                    Armor pants = equipment.getEquippedPants();
+                    if (equipment.getEquippedPants() != null && equipment.getEquippedPants().getWarriorBoost() != 0) {
                         armorBonus = armorBonus + pants.getWarriorBoost();
-                    } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    } else if (equipment.getEquippedPants() != null && equipment.getEquippedPants().getMageBoost() != 0) {
                         armorBonus = armorBonus + pants.getMageBoost();
                     }
                 }
@@ -127,6 +127,7 @@ public class Player {
             int playerDamage = this.attack + totalBonus;
             enemy.setHealth(enemy.getHealth() - playerDamage);
             System.out.println("Hrac zautocil a ubral " + playerDamage + " hp neprateli.");
+            System.out.println("Nepriteli zbyva " + enemy.getHealth() + " hp.");;
 
             if (enemy.getHealth() <= 0) {
                 break;
@@ -135,6 +136,7 @@ public class Player {
             int enemyDamage = enemy.getStrength();
             this.health = this.health - enemyDamage;
             System.out.println("Nepritel zautocil a ubral " + enemyDamage + " hp hraci.");
+            System.out.println("Hracovi zbyva " + getHealth() + " hp.");
 
             if (this.health <= 0) {
                 break;

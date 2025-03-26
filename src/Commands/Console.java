@@ -22,17 +22,17 @@ public class Console {
 
     public boolean playerCreate(){
         this.inventory = new Inventory();
-        Weapon mec = new Weapon("Mec", 5, 0, 100);
-        Weapon hulka = new Weapon("Hulka", 0, 5, 120);
+        Weapon mec = new Weapon("Mec", 0, 1, 100);
+        Weapon hulka = new Weapon("Hulka", 4, 0, 120);
         this.inventory.addWeapon(mec);
         this.inventory.addWeapon(hulka);
-        Armor helma = new Armor("Zakladni helma", "helma", 2, 1);
-        Armor chestplate = new Armor("Zakladni chestplate", "chestplate", 3, 2);
-        Armor kalhoty = new Armor("Zakladni kalhoty", "kalhoty", 2, 1);
+        Armor helma = new Armor("Zakladni helma", "helma", 0, 1);
+        Armor chestplate = new Armor("Zakladni chestplate", "chestplate", 0, 2);
+        Armor kalhoty = new Armor("Zakladni kalhoty", "kalhoty", 0, 1);
         this.inventory.addHelmet(helma);
         this.inventory.addChestplate(chestplate);
         this.inventory.addPants(kalhoty);
-        this.player = new Player("Lucian", 100, 5, this.inventory);
+        this.player = new Player("Lucian", 25, 2, this.inventory);
         this.player.setEquippedWeapon(mec);
         this.player.setCurrentLocation(world.getCurrentPosition());
         return true;
@@ -52,7 +52,6 @@ public class Console {
     public void executeCommand(String name) {
         Command command = commands.get(name);
         if (command != null) {
-            // Tady se vysledek vytiskne jednou
             System.out.println(command.execute());
         } else {
             System.out.println("Neznamy prikaz: " + name);
@@ -62,7 +61,9 @@ public class Console {
     public void startConsole() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("------------------------------------------------------------------------------------------------------------------");
             System.out.println("Nachazis se v " + player.getCurrentLocation());
+            System.out.println("Staty: " + player.getHealth() + "hp," + player.getAttack() + "atk.");
             System.out.println("Co chces delat? (jdi, mluv, zahod, vybav, pouzij, prohledej, boj, pomodlit)");
             System.out.print("> ");
             String input = scanner.nextLine().trim();

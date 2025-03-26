@@ -36,6 +36,7 @@ public class Fight implements Command {
             }
             currentLocation.removeNPC();
             return "Vyhral jsi!";
+            //nastavit zpatky pocet hp na tolik, co mel pred bojem
         } else {
             return "Souboj je u konce.";
         }

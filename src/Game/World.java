@@ -108,7 +108,7 @@ public class World {
         getLocation(9).addEnemy(new Enemy("oko Chaosu", "Vidím tvůj strach.", "Mě nedokážeš porazit!", 10, 1));
         getLocation(7).addEnemy(new Enemy("Veynor", "Myslíš, že máš na to porazit Thorneuse?", "Ukaž, co dovedeš!", 10, 1));
         getLocation(8).addEnemy(new Enemy("Thorneus", "Tak ty chceš zlomit kledbu? HA HA HA! Tak to zkus..", "Selžeš jako ostatní před tebou!", 10, 1));
-        getLocation(2).addEnemy(new Enemy("Nyssa", "Nazdárek!, pojď blíž, nekoušu...hehe.", "Ty jsi tak naivní!", 10, 1));
+        getLocation(2).addEnemy(new Enemy("Nyssa", "Nazdárek!, pojď blíž, nekoušu...hehe.", "Ty jsi tak naivní!", 35,8));
     }
 
     public void assignItems() {

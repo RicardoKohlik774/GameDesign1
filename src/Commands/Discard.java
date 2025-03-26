@@ -19,25 +19,25 @@ public class Discard implements Command {
 
         if (choice.equalsIgnoreCase("zbran")) {
             if (inventory.discardWeapon()) {
-                return "Zbran byla zahozena.";
+                return "Zahodil jsi " + inventory.getEquippedWeapon() + ".";
             } else {
                 return "Nemuzes zahodit posledni zbran.";
             }
         } else if (choice.equalsIgnoreCase("helma")) {
             if (inventory.discardHelmet()) {
-                return "Helma byla zahozena.";
+                return "Zahodil jsi " + inventory.getEquippedHelmet() + ".";
             } else {
                 return "Nemuzes zahodit posledni helmu.";
             }
         } else if (choice.equalsIgnoreCase("chestplate")) {
             if (inventory.discardChestplate()) {
-                return "Chestplate byl zahozen.";
+                return "Zahodil jsi " + inventory.getEquippedChestplate() + ".";
             } else {
                 return "Nemuzes zahodit posledni chestplate.";
             }
         } else if (choice.equalsIgnoreCase("kalhoty")) {
             if (inventory.discardPants()) {
-                return "Kalhoty byly zahozeny.";
+                return "Zahodil jsi " + inventory.getEquippedPants() + ".";
             } else {
                 return "Nemuzes zahodit posledni kalhoty.";
             }
