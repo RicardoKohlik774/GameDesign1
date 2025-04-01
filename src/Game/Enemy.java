@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Represents an enemy character in the game.
+ * Enemies can fight the player and have their own health and strength stats.
+ */
 public class Enemy extends NPC {
     private String fightDialog;
     private int health;
@@ -30,5 +34,9 @@ public class Enemy extends NPC {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 }

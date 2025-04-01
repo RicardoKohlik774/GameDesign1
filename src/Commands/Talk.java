@@ -4,6 +4,14 @@ import Game.*;
 
 import java.util.Scanner;
 
+
+/**
+ * The Talk command lets the player talk to NPCs in the current location.
+ * If the character is a merchant, the player can trade with them.
+ * This includes buying items, selling equipped items, or buying helpful info.
+ * If it's an enemy, the enemy responds with a dialogue.
+ */
+
 public class Talk implements Command {
     private final World world;
     private final Scanner scanner;
@@ -15,6 +23,12 @@ public class Talk implements Command {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * This command allows the player to talk to a character in the current location.
+     * If the player talks to an ally, they can trade, get info, or just talk.
+     * If the player talks to an enemy, it shows the enemy’s dialogue.
+     * The player needs to type the name of the character they want to talk to.
+     */
     @Override
     public String execute() {
         Location currentLocation = world.getCurrentPosition();
@@ -55,6 +69,13 @@ public class Talk implements Command {
         return "Tata postava tu neni.";
     }
 
+
+    /**
+     * Allows the player to buy an item from the ally.
+     * It shows a list of items for sale, asks the player to choose one,
+     * checks if the player has enough money and free inventory slot,
+     * and then makes the purchase.
+     */
     private String doBuy(Ally ally) {
         if (ally.getItemsForSale() == null || ally.getItemsForSale().isEmpty()) {
             return "Tento obchodnik nic neprodava.";
@@ -65,7 +86,6 @@ public class Talk implements Command {
             String itemName = "";
             int itemPrice = 0;
 
-            // Rozliseni podle getClass()
             if (obj.getClass().equals(Weapon.class)) {
                 Weapon w = (Weapon) obj;
                 itemName = w.getName();
@@ -91,9 +111,8 @@ public class Talk implements Command {
             return "Neplatna volba.";
         }
 
-        // Ziskame vybrany objekt
         Object selectedObj = ally.getItemsForSale().get(choice);
-        // Zjistime jmeno a cenu
+
         String selectedName = "";
         int selectedPrice = 0;
 
@@ -113,7 +132,7 @@ public class Talk implements Command {
             return "Nemas dost penez.";
         }
 
-        // Ted pridame do inventory
+
         if (selectedObj.getClass().equals(Weapon.class)) {
             Weapon w = (Weapon) selectedObj;
             boolean added = player.getEquipment().addWeapon(w);
@@ -145,13 +164,16 @@ public class Talk implements Command {
                 return "Nemas volny slot na " + type + ".";
             }
         } else {
-            // Key, cokoliv jineho, nekupujeme
             return "Tento predmet se neda koupit.";
         }
     }
 
 
-
+    /**
+     * Allows the player to sell currently equipped items.
+     * The player can sell a weapon or armor part if they have a replacement.
+     * If the sale is successful, the item is removed and the player receives money.
+     */
     private String doSell() {
         System.out.print("Co chces prodat? (zbran, helma, chestplate, kalhoty) ");
         String sellOption = scanner.nextLine().toLowerCase();
@@ -240,7 +262,10 @@ public class Talk implements Command {
             return "Neplatna volba. Zkus znovu.";
         }
     }
-
+    /**
+     * Lets the player buy a hint from an ally.
+     * If the player agrees, they pay money and receive the info dialog of the Ally.
+     */
     private String doInfo(Ally ally) {
         System.out.print("Cena napovedy je 20. Chces koupit info? (ano/ne) ");
         String infoAnswer = scanner.nextLine().toLowerCase();

@@ -5,17 +5,28 @@ import Game.Player;
 import Game.World;
 import java.util.Scanner;
 
+/**
+ * This command allows the player to move from one location to another.
+ * It checks if the location exists, and if it's locked.
+ */
 public class Move implements Command {
     private final World world;
     private final Player player;
     private final Scanner scanner;
 
+    /**
+     * Creates the Move command using the world and the player.
+     */
     public Move(World world, Player player) {
         this.world = world;
         this.player = player;
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Moves the player to a new location.
+     * Location must exist, be a neighbor, and cannot not be locked.
+     */
     @Override
     public String execute() {
         System.out.println("Kam chces jit? (cislo lokace)");

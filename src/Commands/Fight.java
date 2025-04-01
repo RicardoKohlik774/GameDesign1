@@ -5,15 +5,26 @@ import Game.Player;
 import Game.Enemy;
 import Game.Location;
 
+/**
+ * This class allows the player to fight an enemy in the current location.
+ * If the player or the enemy loses all health, the fight ends.
+ */
 public class Fight implements Command {
     private Player player;
     private World world;
 
+    /**
+     * Creates the Fight command using the player and world objects.
+     */
     public Fight(Player player, World world) {
         this.player = player;
         this.world = world;
     }
 
+    /**
+     * Starts a fight with an enemy in the current location.
+     * If the enemy is defeated, it is removed from the location.
+     */
     @Override
     public String execute() {
         Location currentLocation = world.getCurrentPosition();
@@ -36,7 +47,6 @@ public class Fight implements Command {
             }
             currentLocation.removeNPC();
             return "Vyhral jsi!";
-            //nastavit zpatky pocet hp na tolik, co mel pred bojem
         } else {
             return "Souboj je u konce.";
         }

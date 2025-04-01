@@ -1,5 +1,10 @@
 package Game;
 
+/**
+ * Represents a NPC in the game.
+ * NPCs can be allies or enemies and have a name and a greeting dialog.
+ */
+
 public abstract class NPC {
     protected String name;
     protected String greetDialog;

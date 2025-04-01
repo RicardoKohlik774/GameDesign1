@@ -2,17 +2,40 @@ package Game;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the player character.
+ * The player has health, base attack, inventory, equipment, and a location.
+ * It also handles logic for fighting enemies and checking if the player has all key items.
+ */
+
 public class Player {
     private String name;
     private int health;
     private int attack;
     private ArrayList<Item> inventory;
     private Weapon equippedWeapon;
+    private Armor equippedHelmet;
+    private Armor equippedChestplate;
+    private Armor equippedPants;
     private Inventory equipment;
     private Location currentLocation;
 
     private int money = 200;
 
+
+
+
+    public void setEquippedHelmet(Armor helmet) {
+        this.equippedHelmet = helmet;
+    }
+
+    public void setEquippedChestplate(Armor chestplate) {
+        this.equippedChestplate = chestplate;
+    }
+
+    public void setEquippedPants(Armor pants) {
+        this.equippedPants = pants;
+    }
 
 
     public Player(String name, int health, int attack, Inventory equipment) {
@@ -24,6 +47,9 @@ public class Player {
         this.currentLocation = null;
     }
 
+    /**
+     * Checks if the player has all three main quest items.
+     */
     public boolean hasAllMainItems() {
         boolean hasDagger = false;
         boolean hasBook = false;
@@ -43,6 +69,50 @@ public class Player {
         return hasDagger && hasBook && hasMask;
     }
 
+    /**
+     * Calculates total attack based on the base attack,
+     * equipped weapon and armor boosts (warrior or mage).
+     */
+    public int getCurrentAttack() {
+        int weaponBonus = 0;
+        if (this.equippedWeapon != null) {
+            if (this.equippedWeapon.getWarriorBoost() != 0) {
+                weaponBonus = this.equippedWeapon.getWarriorBoost();
+            } else if (this.equippedWeapon.getMageBoost() != 0) {
+                weaponBonus = this.equippedWeapon.getMageBoost();
+            }
+        }
+
+        int armorBonus = 0;
+        if (this.equipment != null) {
+            if (this.equipment.getEquippedHelmet() != null) {
+                Armor helm = this.equipment.getEquippedHelmet();
+                if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+                    armorBonus += helm.getWarriorBoost();
+                } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    armorBonus += helm.getMageBoost();
+                }
+            }
+            if (this.equipment.getEquippedChestplate() != null) {
+                Armor chest = this.equipment.getEquippedChestplate();
+                if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+                    armorBonus += chest.getWarriorBoost();
+                } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    armorBonus += chest.getMageBoost();
+                }
+            }
+            if (this.equipment.getEquippedPants() != null) {
+                Armor pants = this.equipment.getEquippedPants();
+                if (this.equippedWeapon != null && this.equippedWeapon.getWarriorBoost() != 0) {
+                    armorBonus += pants.getWarriorBoost();
+                } else if (this.equippedWeapon != null && this.equippedWeapon.getMageBoost() != 0) {
+                    armorBonus += pants.getMageBoost();
+                }
+            }
+        }
+        return this.attack + weaponBonus + armorBonus;
+    }
+
 
     public int getHealth() {
         return health;
@@ -56,9 +126,8 @@ public class Player {
         return attack;
     }
 
-    public Weapon getEquippedWeapon() {
-        return equippedWeapon;
-    }
+
+
 
     public void setEquippedWeapon(Weapon weapon) {
         this.equippedWeapon = weapon;
@@ -84,65 +153,42 @@ public class Player {
         this.money = money;
     }
 
+
+
+    /**
+     * Starts a fight between the player and enemy.
+     * If the player wins, their health is increased.
+     * If the player loses, their health and the enemy's health are reset to the original values.
+     */
     public void fight(Enemy enemy) {
+        System.out.println("Souboj zacal.");
+        int originalEnemyHP = enemy.getHealth();   // Ulozime puvodni HP nepratele
+        int originalPlayerHP = this.health;          // Ulozime puvodni HP hrace
+
         while (this.health > 0 && enemy.getHealth() > 0) {
-            int weaponBonus = 0;
-            if (equipment.getEquippedWeapon() != null) {
-                if (equipment.getEquippedWeapon() .getWarriorBoost() != 0) {
-                    weaponBonus = equipment.getEquippedWeapon() .getWarriorBoost();
-                } else if (equipment.getEquippedWeapon() .getMageBoost() != 0) {
-                    weaponBonus = equipment.getEquippedWeapon() .getMageBoost();
-                }
-            }
-
-            int armorBonus = 0;
-            if (equipment.getEquippedHelmet() != null) {
-                if (equipment.getEquippedHelmet() != null) {
-                    Armor helm = equipment.getEquippedHelmet();
-                    if (equipment.getEquippedHelmet() != null && equipment.getEquippedHelmet().getWarriorBoost() != 0) {
-                        armorBonus = armorBonus + helm.getWarriorBoost();
-                    } else if (equipment.getEquippedHelmet() != null && equipment.getEquippedHelmet().getMageBoost() != 0) {
-                        armorBonus = armorBonus + helm.getMageBoost();
-                    }
-                }
-                if (equipment.getEquippedChestplate() != null) {
-                    Armor chest = equipment.getEquippedChestplate();
-                    if (equipment.getEquippedChestplate() != null && equipment.getEquippedChestplate().getWarriorBoost() != 0) {
-                        armorBonus = armorBonus + chest.getWarriorBoost();
-                    } else if (equipment.getEquippedChestplate() != null && equipment.getEquippedChestplate().getMageBoost() != 0) {
-                        armorBonus = armorBonus + chest.getMageBoost();
-                    }
-                }
-                if (equipment.getEquippedPants() != null) {
-                    Armor pants = equipment.getEquippedPants();
-                    if (equipment.getEquippedPants() != null && equipment.getEquippedPants().getWarriorBoost() != 0) {
-                        armorBonus = armorBonus + pants.getWarriorBoost();
-                    } else if (equipment.getEquippedPants() != null && equipment.getEquippedPants().getMageBoost() != 0) {
-                        armorBonus = armorBonus + pants.getMageBoost();
-                    }
-                }
-            }
-
-            int totalBonus = weaponBonus + armorBonus;
-            int playerDamage = this.attack + totalBonus;
+            int playerDamage = getCurrentAttack();
             enemy.setHealth(enemy.getHealth() - playerDamage);
             System.out.println("Hrac zautocil a ubral " + playerDamage + " hp neprateli.");
-            System.out.println("Nepriteli zbyva " + enemy.getHealth() + " hp.");;
 
             if (enemy.getHealth() <= 0) {
+                System.out.println("Vyhral jsi souboj.");
+                setHealth(originalPlayerHP + 10);
                 break;
             }
 
             int enemyDamage = enemy.getStrength();
             this.health = this.health - enemyDamage;
             System.out.println("Nepritel zautocil a ubral " + enemyDamage + " hp hraci.");
-            System.out.println("Hracovi zbyva " + getHealth() + " hp.");
 
             if (this.health <= 0) {
+                System.out.println("Prohral jsi.");
+                setHealth(originalPlayerHP);
+                enemy.setHealth(originalEnemyHP);
                 break;
             }
         }
     }
+
 
 
 

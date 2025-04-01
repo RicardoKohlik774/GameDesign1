@@ -6,6 +6,11 @@ public class Weapon {
  private int warriorBoost;
  private int price;
 
+ /**
+  * This class represents a weapon that the player can equip.
+  * Each weapon gives a mage or warrior attack boost and has a price.
+  */
+
  public Weapon(String name, int mageBoost, int warriorBoost, int price) {
   this.name = name;
   this.mageBoost = mageBoost;

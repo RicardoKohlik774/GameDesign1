@@ -3,6 +3,11 @@ package Game;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a location in the game.
+ * A location can have allies, enemies, items, and be locked or unlocked.
+ */
+
 public class Location {
     private int id;
     private String name;
@@ -11,6 +16,7 @@ public class Location {
     private List<Enemy> enemies;
     private Object item;
     private boolean locked;
+
 
     public Location(int id, String name, String[] neighbors) {
         this.id = id;

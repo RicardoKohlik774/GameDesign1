@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Represents a piece of armor that can be equipped by the player.
+ * Armor can boost either magic or warrior stats depending on its type.
+ */
 public class Armor {
     private String name;
     private String type;
@@ -7,11 +11,12 @@ public class Armor {
     private int warriorBoost;
     private int price;
 
-    public Armor(String name, String type, int mageBoost, int warriorBoost) {
+    public Armor(String name, String type, int mageBoost, int warriorBoost, int price) {
         this.name = name;
         this.type = type;
         this.mageBoost = mageBoost;
         this.warriorBoost = warriorBoost;
+        this.price = price;
     }
 
     public String getName() {

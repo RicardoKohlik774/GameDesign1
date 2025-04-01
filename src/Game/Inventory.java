@@ -2,6 +2,12 @@ package Game;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the player's inventory.
+ * Stores weapons, armor pieces, main quest items and keys.
+ * Also has methods for equipping, discarding, and managing items.
+ */
+
 public class Inventory {
     private ArrayList<Weapon> weapons;
     private ArrayList<Armor> helmets;
@@ -26,6 +32,24 @@ public class Inventory {
         Items.add(item);
         return true;
     }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public ArrayList<Armor> getHelmets() {
+        return helmets;
+    }
+
+    public ArrayList<Armor> getChestplates() {
+        return chestplates;
+    }
+
+    public ArrayList<Armor> getPants() {
+        return pants;
+    }
+
+
 
     public int getWeaponsCount() {
         return weapons.size();

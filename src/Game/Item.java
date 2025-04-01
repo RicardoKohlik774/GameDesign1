@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Represents an item in the game.
+ * Items can be movable or immovable, and some are required to finish the game.
+ */
 public class Item {
     private String name;
     private boolean isMovable;

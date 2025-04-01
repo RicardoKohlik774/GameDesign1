@@ -4,13 +4,19 @@ import Game.*;
 
 import java.util.Scanner;
 
+/**
+ * This command allows the player to search the current location for the item it contains.
+ * If the location contains an item, the player can decide to take it or interact with it.
+ */
 public class Search implements Command {
     private final World world;
     private final Inventory inventory;
     private final Scanner scanner;
     private final Player player;
 
-
+    /**
+     * Creates the Search command using the game world, player's inventory, and player object.
+     */
     public Search(World world, Inventory inventory, Player player) {
         this.world = world;
         this.inventory = inventory;
@@ -18,6 +24,11 @@ public class Search implements Command {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Searches the current location for an item.
+     * If the item can be picked up, it is added to the player's inventory (if the player has space).
+     * If it is an immovable item, the player gets a bonus instead.
+     */
     @Override
     public String execute() {
         Location currentLocation = world.getCurrentPosition();
