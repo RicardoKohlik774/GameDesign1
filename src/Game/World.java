@@ -132,18 +132,22 @@ public class World {
         return world.get(id);
     }
 
-
+//pridat, at se prodane veci daj zpatky koupit (cheese tax)
     public void assignNPCs() {
        getLocation(1).addAlly(new Ally("Mira", "O můj bože, ty jsi naživu!", false, 30, "Bez do dolniho namesti fightit Nyssu"));
        Ally baldric = new Ally("Baldric", "Co tu pohledáváš?", true, 50, "Bez do sklepeni zbit Garraka");
         getLocation(3).addAlly(baldric);
         baldric.addItemForSale(new Armor("zelezna helma", "helma",0,3, 50));
-        getLocation(2).addAlly(new Ally("Renzo", "Ahoj, mám nějaké zboží, které by se ti mohlo hodit.", true, 50, "Bez do opusteneho domu a pokecej s Baldricem"));
+
+        Ally renzo = new Ally("Renzo", "Ahoj, mám nějaké zboží, které by se ti mohlo hodit.", true, 50, "Bez do opusteneho domu a pokecej s Baldricem");
+        getLocation(2).addAlly(renzo);
+        renzo.addItemForSale(new Armor("zelezny chestplate", "chestplate", 0, 5,70));
+
         getLocation(5).addAlly(new Ally("Korin", "Vítej, je hezké vidět dalšího člověka a ne monstrum.", false, 100, "Bez do kostela a tam najdes klic k rozborene vezi"));
         getLocation(6).addAlly(new Ally("Felmir", "Zdař bůh!", true, 150, "Bez do veze zbit oko Chaosu"));
         getLocation(9).addAlly(new Ally("Kaplan", "Zdravím človeče...máš štěstí že jsi jestě na živu.", true, 200, "Kup si ode mne nebo Felmira lepsi zbroj a bez zbit Veynora"));
         getLocation(4).addEnemy(new Enemy("Garrak", "Sem jsi neměl chodit...", "Budeš další!", 50, 9));
-        getLocation(9).addEnemy(new Enemy("oko Chaosu", "Vidím tvůj strach.", "Mě nedokážeš porazit!", 10, 1));
+        getLocation(9).addEnemy(new Enemy("oko Chaosu", "Vidím tvůj strach.", "Mě nedokážeš porazit!", 80, 10));
         getLocation(7).addEnemy(new Enemy("Veynor", "Myslíš, že máš na to porazit Thorneuse?", "Ukaž, co dovedeš!", 10, 1));
         getLocation(8).addEnemy(new Enemy("Thorneus", "Tak ty chceš zlomit kledbu? HA HA HA! Tak to zkus..", "Selžeš jako ostatní před tebou!", 10, 1));
         getLocation(2).addEnemy(new Enemy("Nyssa", "Nazdárek!, pojď blíž, nekoušu...hehe.", "Ty jsi tak naivní!", 35,8));

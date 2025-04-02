@@ -29,6 +29,7 @@ public class Use implements Command {
      * If not, shows a message that the key can't be used here.
      */
 
+    //nefuguje vstup do odemknute mistosti
     @Override
     public String execute() {
         System.out.println("Co chces pouzit?");
@@ -45,9 +46,6 @@ public class Use implements Command {
         }
 
         if (currentLoc.getId() == 3) {
-            if (!currentLoc.isLocked()) {
-                return "Sklepeni jiz neni zamceno.";
-            }
             if (userInput.equalsIgnoreCase("Klic od sklepeni")) {
                 currentLoc.setLocked(false);
                 inventory.removeKey();

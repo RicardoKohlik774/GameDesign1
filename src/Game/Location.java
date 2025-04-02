@@ -82,6 +82,8 @@ public class Location {
         this.locked = locked;
     }
 
+
+    //upravit, aby se vypisovali ally i enemys
     @Override
     public String toString() {
         String npcInfo;
