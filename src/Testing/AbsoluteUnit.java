@@ -54,7 +54,7 @@ public class AbsoluteUnit {
         inventory.addChestplate(chestplate);
         inventory.addPants(kalhoty);
 
-        player = new Player("Lucian", 100, 10, inventory);
+        player = new Player("Lucian", 100, 10, inventory,500);
         player.setEquippedWeapon(mec);
         player.setEquippedHelmet(helma);
         player.setEquippedChestplate(chestplate);

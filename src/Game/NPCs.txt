@@ -1,0 +1,11 @@
+ALLY;1;Mira;O můj bože, ty jsi naživu!;false;30;Bez do dolniho namesti fightit Nyssu
+ALLY;3;Baldric;Co tu pohledáváš?;true;50;Bez do sklepeni zbit Garraka;zelezna helma|helma|0|3|50
+ALLY;2;Renzo;Ahoj, mám nějaké zboží, které by se ti mohlo hodit.;true;50;Bez do opusteneho domu a pokecej s Baldricem;zelezny chestplate|chestplate|0|5|70
+ALLY;5;Korin;Vítej, je hezké vidět dalšího člověka a ne monstrum.;false;100;Bez do kostela a tam najdes klic k rozborene vezi
+ALLY;6;Felmir;Zdař bůh!;true;150;Bez do veze zbit oko Chaosu;magicka helma|helma|10|0|200,magicky chestplate|chestplate|15|0|250,magicke kalhoty|kalhoty|10|0|200
+ALLY;9;Kaplan;Zdravím človeče...máš štěstí že jsi jestě na živu.;true;200;Kup si ode mne a Felmira lepsi zbroj a bez zbit Veynora;Hulka nejvyssiho kalibru|hulka|20|0|300
+ENEMY;4;Garrak;Sem jsi neměl chodit...;Budeš další!;1;9
+ENEMY;9;oko Chaosu;Vidím tvůj strach.;Mě nedokážeš porazit!;1;10
+ENEMY;7;Veynor;Myslíš, že máš na to porazit Thorneuse?;Ukaž, co dovedeš!;1;1
+ENEMY;8;Thorneus;Tak ty chceš zlomit kledbu? HA HA HA! Tak to zkus..;Selžeš jako ostatní před tebou!;1;20
+ENEMY;2;Nyssa;Nazdárek!, pojď blíž, nekoušu...hehe.;Ty jsi tak naivní!;1;8

@@ -1,0 +1,8 @@
+1;Weapon;Rezava dyka;0;5;50
+2;Armor;Kozene boty;kalhoty;0;3;40
+3;Key;Klic od sklepeni
+6;Key;Klic od veze
+4;Item;Dyka smrti;true;true
+9;Item;Kniha kouzel;true;true
+7;Item;Maska zapomneni;true;true
+5;Item;Fontana;false;false

@@ -21,6 +21,8 @@ public class Console {
     public Console(World world) {
         this.world = world;
         world.loadMap();
+        world.loadNPCs();
+        world.loadItems();
         world.assignLocks();
         playerCreate();
         registerCommands();
@@ -41,7 +43,7 @@ public class Console {
         this.inventory.addHelmet(helma);
         this.inventory.addChestplate(chestplate);
         this.inventory.addPants(kalhoty);
-        this.player = new Player("Lucian", 25, 3, this.inventory);
+        this.player = new Player("Lucian", 25, 3, this.inventory,1000);
         this.player.setEquippedWeapon(hulka);
         this.player.setCurrentLocation(world.getCurrentPosition());
         return true;

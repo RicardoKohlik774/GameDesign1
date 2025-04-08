@@ -83,37 +83,40 @@ public class Location {
     }
 
 
-    //upravit, aby se vypisovali ally i enemys
+
     @Override
     public String toString() {
-        String npcInfo;
-        if (allies.size() > 0) {
-            npcInfo = "Allies: ";
+        String npcInfo = "";
+        if (!allies.isEmpty()) {
+            npcInfo += "Allies: ";
             for (int i = 0; i < allies.size(); i++) {
-                npcInfo = npcInfo + allies.get(i).getName();
+                npcInfo += allies.get(i).getName();
                 if (i < allies.size() - 1) {
-                    npcInfo = npcInfo + ", ";
+                    npcInfo += ", ";
                 }
             }
-        } else if (enemies.size() > 0) {
-            npcInfo = "Enemies: ";
+        }
+        if (!enemies.isEmpty()) {
+            if (!npcInfo.isEmpty()) {
+                npcInfo += " | ";
+            }
+            npcInfo += "Enemies: ";
             for (int i = 0; i < enemies.size(); i++) {
-                npcInfo = npcInfo + enemies.get(i).getName();
+                npcInfo += enemies.get(i).getName();
                 if (i < enemies.size() - 1) {
-                    npcInfo = npcInfo + ", ";
+                    npcInfo += ", ";
                 }
             }
-        } else {
+        }
+        if (npcInfo.isEmpty()) {
             npcInfo = "None";
         }
-
         String itemInfo;
         if (item != null) {
             itemInfo = item.toString();
         } else {
             itemInfo = "Zadny predmet";
         }
-
         return "Location{id=" + id
                 + ", name='" + name + "', neighbors=" + String.join(", ", neighbors)
                 + ", npc=" + npcInfo

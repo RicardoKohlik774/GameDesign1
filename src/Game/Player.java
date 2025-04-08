@@ -38,13 +38,14 @@ public class Player {
     }
 
 
-    public Player(String name, int health, int attack, Inventory equipment) {
+    public Player(String name, int health, int attack, Inventory equipment, int money) {
         this.name = name;
         this.health = health;
         this.attack = attack;
         this.inventory = new ArrayList<>();
         this.equipment = equipment;
         this.currentLocation = null;
+        this.money = money;
     }
 
     /**
@@ -162,8 +163,8 @@ public class Player {
      */
     public void fight(Enemy enemy) {
         System.out.println("Souboj zacal.");
-        int originalEnemyHP = enemy.getHealth();   // Ulozime puvodni HP nepratele
-        int originalPlayerHP = this.health;          // Ulozime puvodni HP hrace
+        int originalEnemyHP = enemy.getHealth();
+        int originalPlayerHP = this.health;
 
         while (this.health > 0 && enemy.getHealth() > 0) {
             int playerDamage = getCurrentAttack();

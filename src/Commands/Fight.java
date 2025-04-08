@@ -13,6 +13,7 @@ public class Fight implements Command {
     private Player player;
     private World world;
 
+
     /**
      * Creates the Fight command using the player and world objects.
      */
@@ -38,6 +39,7 @@ public class Fight implements Command {
         System.out.println("Jdes bojovat s " + enemy.getName() + ".");
         player.fight(enemy);
 
+
         if (player.getHealth() <= 0) {
             return "Prohral jsi...";
         } else if (enemy.getHealth() <= 0) {
@@ -46,6 +48,7 @@ public class Fight implements Command {
                 System.exit(0);
             }
             currentLocation.removeNPC();
+            world.updateLocks(player);
             return "Vyhral jsi!";
         } else {
             return "Souboj je u konce.";

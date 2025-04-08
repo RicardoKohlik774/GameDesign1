@@ -17,6 +17,7 @@ public class Talk implements Command {
     private final Scanner scanner;
     private final Player player;
 
+
     public Talk(World world, Player player) {
         this.world = world;
         this.player = player;
@@ -35,25 +36,31 @@ public class Talk implements Command {
         if (currentLocation == null) {
             return "Nejsi v zadne lokaci.";
         }
+
         System.out.print("S kym chces mluvit? ");
         String npcName = scanner.nextLine();
+
         Ally ally = currentLocation.getAlly();
         if (ally != null && ally.getName().equalsIgnoreCase(npcName)) {
             String greeting = ally.getGreetDialog();
+
             if (ally.isDealer()) {
                 System.out.print("Chces obchodovat? (ano/ne) ");
                 String tradeAnswer = scanner.nextLine().toLowerCase();
+
                 if (tradeAnswer.equals("ano")) {
-                    System.out.print("Vyber: kupit, prodat, info: ");
+                    System.out.print("Vyber: koupit, prodat, info: ");
                     String tradeOption = scanner.nextLine().toLowerCase();
-                    if (tradeOption.equals("kupit")) {
-                        return doBuy(ally);
-                    } else if (tradeOption.equals("prodat")) {
-                        return doSell();
-                    } else if (tradeOption.equals("info")) {
-                        return doInfo(ally);
-                    } else {
-                        return "Neplatna volba obchodovani.";
+
+                    switch (tradeOption) {
+                        case "koupit":
+                            return doBuy(ally);
+                        case "prodat":
+                            return doSell(ally);
+                        case "info":
+                            return doInfo(ally);
+                        default:
+                            return "Neplatna volba obchodovani.";
                     }
                 } else {
                     return greeting;
@@ -62,12 +69,15 @@ public class Talk implements Command {
                 return greeting;
             }
         }
+
         Enemy enemy = currentLocation.getEnemy();
         if (enemy != null && enemy.getName().equalsIgnoreCase(npcName)) {
             return enemy.getGreetDialog();
         }
+
         return "Tata postava tu neni.";
     }
+
 
 
     /**
@@ -80,6 +90,7 @@ public class Talk implements Command {
         if (ally.getItemsForSale() == null || ally.getItemsForSale().isEmpty()) {
             return "Tento obchodnik nic neprodava.";
         }
+
         System.out.println("Obchodnik nabizi tyto predmety:");
         for (int i = 0; i < ally.getItemsForSale().size(); i++) {
             Object obj = ally.getItemsForSale().get(i);
@@ -132,7 +143,6 @@ public class Talk implements Command {
             return "Nemas dost penez.";
         }
 
-
         if (selectedObj.getClass().equals(Weapon.class)) {
             Weapon w = (Weapon) selectedObj;
             boolean added = player.getEquipment().addWeapon(w);
@@ -174,94 +184,106 @@ public class Talk implements Command {
      * The player can sell a weapon or armor part if they have a replacement.
      * If the sale is successful, the item is removed and the player receives money.
      */
-    private String doSell() {
+    private String doSell(Ally ally) {
         System.out.print("Co chces prodat? (zbran, helma, chestplate, kalhoty) ");
         String sellOption = scanner.nextLine().toLowerCase();
-        if (sellOption.equals("zbran")) {
-            if (player.getEquipment().getWeaponsCount() > 1 && player.getEquipment().getEquippedWeapon() != null) {
-                Weapon weapon = player.getEquipment().getEquippedWeapon();
-                int price = weapon.getPrice();
-                System.out.print("Chces prodat " + weapon.getName() + " za " + price + " ? (ano/ne) ");
-                String sellAnswer = scanner.nextLine().toLowerCase();
-                if (sellAnswer.equals("ano")) {
-                    boolean sold = player.getEquipment().sellActiveWeapon();
-                    if (sold) {
-                        player.setMoney(player.getMoney() + price);
-                        player.setEquippedWeapon(null);
-                        return "Zbran byla prodana. Ted mas " + player.getMoney() + " penez.";
+
+        switch (sellOption) {
+            case "zbran":
+                if (player.getEquipment().getWeaponsCount() > 1 && player.getEquipment().getEquippedWeapon() != null) {
+                    Weapon weapon = player.getEquipment().getEquippedWeapon();
+                    int price = weapon.getPrice();
+                    System.out.print("Chces prodat " + weapon.getName() + " za " + price + " ? (ano/ne) ");
+                    String sellAnswer = scanner.nextLine().toLowerCase();
+                    if (sellAnswer.equals("ano")) {
+                        boolean sold = player.getEquipment().sellActiveWeapon();
+                        if (sold) {
+                            player.setMoney(player.getMoney() + price);
+                            player.setEquippedWeapon(null);
+                          ally.addItemForSale(weapon);
+                            return "Zbran byla prodana. Ted mas " + player.getMoney() + " penez.";
+                        } else {
+                            return "Nepodarilo se prodat aktivni zbran.";
+                        }
                     } else {
-                        return "Nepodarilo se prodat aktivni zbran.";
+                        return "Prodej zbrane zrusen.";
                     }
                 } else {
-                    return "Prodej zbrane zrusen.";
+                    return "Nemuzes prodat zbran, protoze nemas zadnou nahradni zbran v inventari.";
                 }
-            } else {
-                return "Nemuzes prodat zbran, protoze nemas zadnou nahradni zbran v inventari.";
-            }
-        } else if (sellOption.equals("helma")) {
-            if (player.getEquipment().getHelmetsCount() > 1 && player.getEquipment().getEquippedHelmet() != null) {
-                Armor helmet = player.getEquipment().getEquippedHelmet();
-                int price = helmet.getPrice();
-                System.out.print("Chces prodat " + helmet.getName() + " za " + price + " ? (ano/ne) ");
-                String sellAnswer = scanner.nextLine().toLowerCase();
-                if (sellAnswer.equals("ano")) {
-                    boolean sold = player.getEquipment().sellActiveHelmet();
-                    if (sold) {
-                        player.setMoney(player.getMoney() + price);
-                        return "Helma byla prodana. Ted mas " + player.getMoney() + " penez.";
+
+            case "helma":
+                if (player.getEquipment().getHelmetsCount() > 1 && player.getEquipment().getEquippedHelmet() != null) {
+                    Armor helmet = player.getEquipment().getEquippedHelmet();
+                    int price = helmet.getPrice();
+                    System.out.print("Chces prodat " + helmet.getName() + " za " + price + " ? (ano/ne) ");
+                    String sellAnswer = scanner.nextLine().toLowerCase();
+                    if (sellAnswer.equals("ano")) {
+                        boolean sold = player.getEquipment().sellActiveHelmet();
+                        if (sold) {
+                            player.setMoney(player.getMoney() + price);
+                            ally.addItemForSale(helmet);
+                            return "Helma byla prodana. Ted mas " + player.getMoney() + " penez.";
+                        } else {
+                            return "Nepodarilo se prodat aktivni helmu.";
+                        }
                     } else {
-                        return "Nepodarilo se prodat aktivni helmu.";
+                        return "Prodej helmy zrusen.";
                     }
                 } else {
-                    return "Prodej helmy zrusen.";
+                    return "Nemuzes prodat helmu, protoze nemas zadnou nahradni helmu v inventari.";
                 }
-            } else {
-                return "Nemuzes prodat helmu, protoze nemas zadnou nahradni helmu v inventari.";
-            }
-        } else if (sellOption.equals("chestplate")) {
-            if (player.getEquipment().getChestplatesCount() > 1 && player.getEquipment().getEquippedChestplate() != null) {
-                Armor chest = player.getEquipment().getEquippedChestplate();
-                int price = chest.getPrice();
-                System.out.print("Chces prodat " + chest.getName() + " za " + price + " ? (ano/ne) ");
-                String sellAnswer = scanner.nextLine().toLowerCase();
-                if (sellAnswer.equals("ano")) {
-                    boolean sold = player.getEquipment().sellActiveChestplate();
-                    if (sold) {
-                        player.setMoney(player.getMoney() + price);
-                        return "Chestplate byl prodan. Ted mas " + player.getMoney() + " penez.";
+
+            case "chestplate":
+                if (player.getEquipment().getChestplatesCount() > 1 && player.getEquipment().getEquippedChestplate() != null) {
+                    Armor chestplate = player.getEquipment().getEquippedChestplate();
+                    int price = chestplate.getPrice();
+                    System.out.print("Chces prodat " + chestplate.getName() + " za " + price + " ? (ano/ne) ");
+                    String sellAnswer = scanner.nextLine().toLowerCase();
+                    if (sellAnswer.equals("ano")) {
+                        boolean sold = player.getEquipment().sellActiveChestplate();
+                        if (sold) {
+                            player.setMoney(player.getMoney() + price);
+                            ally.addItemForSale(chestplate);
+                            return "Chestplate byl prodan. Ted mas " + player.getMoney() + " penez.";
+                        } else {
+                            return "Nepodarilo se prodat aktivni chestplate.";
+                        }
                     } else {
-                        return "Nepodarilo se prodat aktivni chestplate.";
+                        return "Prodej chestplate zrusen.";
                     }
                 } else {
-                    return "Prodej chestplate zrusen.";
+                    return "Nemuzes prodat chestplate, protoze nemas zadny nahradni chestplate v inventari.";
                 }
-            } else {
-                return "Nemuzes prodat chestplate, protoze nemas zadny nahradni chestplate v inventari.";
-            }
-        } else if (sellOption.equals("kalhoty")) {
-            if (player.getEquipment().getPantsCount() > 1 && player.getEquipment().getEquippedPants() != null) {
-                Armor pants = player.getEquipment().getEquippedPants();
-                int price = pants.getPrice();
-                System.out.print("Chces prodat " + pants.getName() + " za " + price + " ? (ano/ne) ");
-                String sellAnswer = scanner.nextLine().toLowerCase();
-                if (sellAnswer.equals("ano")) {
-                    boolean sold = player.getEquipment().sellActivePants();
-                    if (sold) {
-                        player.setMoney(player.getMoney() + price);
-                        return "Kalhoty byly prodany. Ted mas " + player.getMoney() + " penez.";
+
+            case "kalhoty":
+                if (player.getEquipment().getPantsCount() > 1 && player.getEquipment().getEquippedPants() != null) {
+                    Armor pants = player.getEquipment().getEquippedPants();
+                    int price = pants.getPrice();
+                    System.out.print("Chces prodat " + pants.getName() + " za " + price + " ? (ano/ne) ");
+                    String sellAnswer = scanner.nextLine().toLowerCase();
+                    if (sellAnswer.equals("ano")) {
+                        boolean sold = player.getEquipment().sellActivePants();
+                        if (sold) {
+                            player.setMoney(player.getMoney() + price);
+                            ally.addItemForSale(pants);
+                            return "Kalhoty byly prodany. Ted mas " + player.getMoney() + " penez.";
+                        } else {
+                            return "Nepodarilo se prodat aktivni kalhoty.";
+                        }
                     } else {
-                        return "Nepodarilo se prodat aktivni kalhoty.";
+                        return "Prodej kalhot zrusen.";
                     }
                 } else {
-                    return "Prodej kalhot zrusen.";
+                    return "Nemuzes prodat kalhoty, protoze nemas zadne nahradni kalhoty v inventari.";
                 }
-            } else {
-                return "Nemuzes prodat kalhoty, protoze nemas zadne nahradni kalhoty v inventari.";
-            }
-        } else {
-            return "Neplatna volba. Zkus znovu.";
+
+            default:
+                return "Neplatna volba. Zkus znovu.";
         }
     }
+
+
     /**
      * Lets the player buy a hint from an ally.
      * If the player agrees, they pay money and receive the info dialog of the Ally.

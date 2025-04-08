@@ -15,6 +15,9 @@ public class World {
     private int start = 1;
     private int currentPosition = start;
 
+    /**
+     * Loads map data from a text file and creates locations.
+     */
     public boolean loadMap() {
         try (BufferedReader br = new BufferedReader(new FileReader("src/Game/Mapa.txt"))) {
             String line;
@@ -32,6 +35,117 @@ public class World {
             return false;
         }
     }
+
+
+    /**
+     * Loads items from a text file and places them into locations.
+     */
+    public boolean loadItems() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Game/Items.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] rozdeleniRadku = line.split(";");
+                int locationId = Integer.parseInt(rozdeleniRadku[0]);
+                String type = rozdeleniRadku[1];
+                switch (type) {
+                    case "Weapon":
+                        String weaponName = rozdeleniRadku[2];
+                        int mageBoost = Integer.parseInt(rozdeleniRadku[3]);
+                        int warriorBoost = Integer.parseInt(rozdeleniRadku[4]);
+                        int weaponPrice = Integer.parseInt(rozdeleniRadku[5]);
+                        getLocation(locationId).setItem(new Weapon(weaponName, mageBoost, warriorBoost, weaponPrice));
+                        break;
+                    case "Armor":
+                        String armorName = rozdeleniRadku[2];
+                        String armorType = rozdeleniRadku[3];
+                        int armorMageBoost = Integer.parseInt(rozdeleniRadku[4]);
+                        int armorWarriorBoost = Integer.parseInt(rozdeleniRadku[5]);
+                        int armorPrice = Integer.parseInt(rozdeleniRadku[6]);
+                        getLocation(locationId).setItem(new Armor(armorName, armorType, armorMageBoost, armorWarriorBoost, armorPrice));
+                        break;
+                    case "Key":
+                        String keyName = rozdeleniRadku[2];
+                        getLocation(locationId).setItem(new Key(keyName));
+                        break;
+                    case "Item":
+                        String itemName = rozdeleniRadku[2];
+                        boolean movable = Boolean.parseBoolean(rozdeleniRadku[3]);
+                        boolean isMain = Boolean.parseBoolean(rozdeleniRadku[4]);
+                        getLocation(locationId).setItem(new Item(itemName, movable, isMain));
+                        break;
+                    default:
+                        System.out.println("Neznamy typ itemu: " + type);
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            System.out.println("Chyba nacteni itemu ze souboru.");
+            return false;
+        }
+    }
+
+    /**
+     * Loads NPCs (Allies and Enemies) from a text file and adds them to locations.
+     * Some allies have items for sale.
+     */
+    public void loadNPCs() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Game/NPCs.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                String type = parts[0];
+                int locationId = Integer.parseInt(parts[1]);
+                Location location = getLocation(locationId);
+
+                if (type.equals("ALLY")) {
+                    String name = parts[2];
+                    String greet = parts[3];
+                    boolean isDealer = Boolean.parseBoolean(parts[4]);
+                    int infoPrice = Integer.parseInt(parts[5]);
+                    String info = parts[6];
+                    Ally ally = new Ally(name, greet, isDealer, infoPrice, info);
+
+                    if (isDealer && parts.length > 7) {
+                        String[] items = parts[7].split(",");
+                        for (String itemStr : items) {
+                            String[] itemParts = itemStr.split("\\|");
+                            if (itemParts.length == 5) {    //Armor
+                                String itemName = itemParts[0];
+                                String typeName = itemParts[1];
+                                int mageBoost = Integer.parseInt(itemParts[2]);
+                                int warriorBoost = Integer.parseInt(itemParts[3]);
+                                int price = Integer.parseInt(itemParts[4]);
+                                Armor armor = new Armor(itemName, typeName, mageBoost, warriorBoost, price);
+                                ally.addItemForSale(armor);
+                            } else if (itemParts.length == 4) {   //Weapon
+                                String itemName = itemParts[0];
+                                int mageBoost = Integer.parseInt(itemParts[1]);
+                                int warriorBoost = Integer.parseInt(itemParts[2]);
+                                int price = Integer.parseInt(itemParts[3]);
+                                Weapon weapon = new Weapon(itemName, mageBoost, warriorBoost, price);
+                                ally.addItemForSale(weapon);
+                            }
+                        }
+                    }
+
+                    location.addAlly(ally);
+                } else if (type.equals("ENEMY")) {
+                    String name = parts[2];
+                    String greet = parts[3];
+                    String fight = parts[4];
+                    int health = Integer.parseInt(parts[5]);
+                    int strength = Integer.parseInt(parts[6]);
+                    Enemy enemy = new Enemy(name, greet, fight, health, strength);
+                    location.addEnemy(enemy);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Chyba nacitani NPC ze souboru");
+        }
+    }
+
+
+
     /**
      * Locks selected locations at the start of the game.
      */
@@ -52,21 +166,31 @@ public class World {
      * Unlocks "Horni namesti" if location "Sklpeni" has no enemy.
      * Unlocks "Komnata smrti" if player has all three main items.
      */
-   public void updateLocks(Player player) {
-       Location sklep = getLocation(4);
-      Location horniNamesti = getLocation(5);
+    public void updateLocks(Player player) {
+        Location sklep = getLocation(4);
+        Location horniNamesti = getLocation(5);
         Location komnata = getLocation(8);
-          if (sklep.getEnemy() != null) {
-                horniNamesti.setLocked(false);
-            } else {
-                horniNamesti.setLocked(true);
-           }
-            if (player.hasAllMainItems()) {
-                komnata.setLocked(false);
-            } else {
-                komnata.setLocked(true);
-            }
+        Location vez = getLocation(7);
+        Location soudniSin = getLocation(9);
+        Location dolniNamesti = getLocation(2);
 
+        boolean sklepEnemy = sklep != null && !sklep.getEnemies().isEmpty();
+        boolean dolniNamestiEnemy = dolniNamesti != null && !dolniNamesti.getEnemies().isEmpty();
+        boolean vezEnemy = vez != null && !vez.getEnemies().isEmpty();
+        boolean soudniSinEnemy = soudniSin != null && !soudniSin.getEnemies().isEmpty();
+        boolean maMainItemy = player.hasAllMainItems();
+
+        if (sklepEnemy || dolniNamestiEnemy) {
+            horniNamesti.setLocked(true);
+        } else {
+            horniNamesti.setLocked(false);
+        }
+
+        if (maMainItemy && !vezEnemy && !soudniSinEnemy) {
+            komnata.setLocked(false);
+        } else {
+            komnata.setLocked(true);
+        }
     }
 
     public void addLocation(int id, Location location) {
@@ -132,37 +256,5 @@ public class World {
         return world.get(id);
     }
 
-//pridat, at se prodane veci daj zpatky koupit (cheese tax)
-    public void assignNPCs() {
-       getLocation(1).addAlly(new Ally("Mira", "O můj bože, ty jsi naživu!", false, 30, "Bez do dolniho namesti fightit Nyssu"));
-       Ally baldric = new Ally("Baldric", "Co tu pohledáváš?", true, 50, "Bez do sklepeni zbit Garraka");
-        getLocation(3).addAlly(baldric);
-        baldric.addItemForSale(new Armor("zelezna helma", "helma",0,3, 50));
-
-        Ally renzo = new Ally("Renzo", "Ahoj, mám nějaké zboží, které by se ti mohlo hodit.", true, 50, "Bez do opusteneho domu a pokecej s Baldricem");
-        getLocation(2).addAlly(renzo);
-        renzo.addItemForSale(new Armor("zelezny chestplate", "chestplate", 0, 5,70));
-
-        getLocation(5).addAlly(new Ally("Korin", "Vítej, je hezké vidět dalšího člověka a ne monstrum.", false, 100, "Bez do kostela a tam najdes klic k rozborene vezi"));
-        getLocation(6).addAlly(new Ally("Felmir", "Zdař bůh!", true, 150, "Bez do veze zbit oko Chaosu"));
-        getLocation(9).addAlly(new Ally("Kaplan", "Zdravím človeče...máš štěstí že jsi jestě na živu.", true, 200, "Kup si ode mne nebo Felmira lepsi zbroj a bez zbit Veynora"));
-        getLocation(4).addEnemy(new Enemy("Garrak", "Sem jsi neměl chodit...", "Budeš další!", 50, 9));
-        getLocation(9).addEnemy(new Enemy("oko Chaosu", "Vidím tvůj strach.", "Mě nedokážeš porazit!", 80, 10));
-        getLocation(7).addEnemy(new Enemy("Veynor", "Myslíš, že máš na to porazit Thorneuse?", "Ukaž, co dovedeš!", 10, 1));
-        getLocation(8).addEnemy(new Enemy("Thorneus", "Tak ty chceš zlomit kledbu? HA HA HA! Tak to zkus..", "Selžeš jako ostatní před tebou!", 10, 1));
-        getLocation(2).addEnemy(new Enemy("Nyssa", "Nazdárek!, pojď blíž, nekoušu...hehe.", "Ty jsi tak naivní!", 35,8));
-    }
-
-    public void assignItems() {
-        getLocation(1).setItem(new Weapon("Rezava dyka", 0,5,50));
-        getLocation(2).setItem(new Armor("Kozene boty", "kalhoty",0,3, 40));
-        getLocation(3).setItem(new Key("Klic od sklepeni"));
-        getLocation(6).setItem(new Key("Klic od veze"));
-        getLocation(4).setItem(new Item("Dyka smrti", true,true));
-        getLocation(9).setItem(new Item("Kniha kouzel", true,true));
-        getLocation(7).setItem(new Item("Maska zapomneni", true,true));
-        getLocation(5).setItem(new Item("Fontana", false,false));
-
-    }
 
 }
